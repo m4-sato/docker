@@ -9,9 +9,18 @@ pipeline {
   stages {
     stage('Pre Check') {
       steps {
-        sh "test -f ~/.docker/config.json"
-        sh "cat ~/.docker/config.json | grep docker.io"
-      }
+      	script {
+          // returnStatus: 0=成功、1=失敗 を返すだけなのでビルドは止まらない
+          def status = sh(
+            script: 'test -f /var/jenkins_home/.docker/config.json',
+            returnStatus: true
+          )
+          if (status == 0) {
+            echo 'Docker config found.'
+          } else {
+            echo 'Docker config not found. Skipping Docker login.'
+          }
+       }
     }
     stage('Build') {
       steps {
