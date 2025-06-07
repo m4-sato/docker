@@ -28,12 +28,8 @@ pipeline {
       steps {
         script {
           // test -f の exit code を取得
-          def status = sh(
-            script: 'test -f ~/.docker/config.json',
-            returnStatus: true
-          )
-          if (status == 0) {
-            echo 'Docker config found.'
+          if (fileExists("${env.HOME}/.docker/config.json")) {
+          echo 'Docker config found.'
           } else {
             echo 'Docker config not found. Skipping Docker login.'
           }
