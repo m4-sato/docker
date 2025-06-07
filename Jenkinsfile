@@ -29,7 +29,7 @@ pipeline {
         script {
           // test -f の exit code を取得
           if (fileExists("${env.HOME}/.docker/config.json")) {
-          echo 'Docker config found.'
+            echo 'Docker config found.'
           } else {
             echo 'Docker config not found. Skipping Docker login.'
           }
