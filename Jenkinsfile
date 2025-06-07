@@ -27,8 +27,12 @@ pipeline {
     stage('Pre Check') {
       steps {
         script {
-          // fileExists を使うとよりわかりやすく失敗を止めません
-          if (fileExists("${HOME}/.docker/config.json")) {
+          // test -f の exit code を取得
+          def status = sh(
+            script: 'test -f ~/.docker/config.json',
+            returnStatus: true
+          )
+          if (status == 0) {
             echo 'Docker config found.'
           } else {
             echo 'Docker config not found. Skipping Docker login.'
